@@ -23,7 +23,7 @@ export default class App extends Component {
         zoom: 1.5,
         transitionDuration: 5000,
       },
-      cities:null,
+      cities: {},
     };
     this._mapRef = React.createRef();
     this._handleMapLoaded = this._handleMapLoaded.bind(this);
@@ -76,7 +76,7 @@ export default class App extends Component {
       (error, response) => {
         if (!error) {
           this.setState({
-            cities: mapdata,
+            cities: response,
           });
           map.addSource(HEATMAP_SOURCE_ID, { type: 'geojson', data: response });
           map.addLayer(this._makeHeatmapLayer('heatmap-layer', 'mag', HEATMAP_SOURCE_ID));
@@ -89,7 +89,7 @@ export default class App extends Component {
   // filter features based on selection {all day?}
   _filterFeaturesByName = (features, name) => {
     return features.filter(feature =>
-      feature.properties.name);
+      feature.properties[name]);
   };
 
   // handles change in option tag 
@@ -98,10 +98,20 @@ export default class App extends Component {
     this._getMap().removeLayer('circle-layer');
     this._getMap().addLayer(this._makeHeatmapLayer('heatmap-layer', selected, HEATMAP_SOURCE_ID));
     this._getMap().addLayer(this._makeHeatmapCircles('circle-layer', 'circle', selected, HEATMAP_SOURCE_ID));
-    if (this.state.cities !== null && this.state.cities.features) {
-      const features = this._filterFeaturesByName(this.state.cities.features, selected);
-      this._setMapData(features);
-    }
+    requestJson(
+      mapdata,
+      (error, response) => {
+        if (!error) {
+          if (response.features) {
+            console.log(response)
+            const features = this._filterFeaturesByName(response.features, selected);
+            console.log(features);
+            this._setMapData(features);
+          }
+        }
+      }
+    );
+    
   };
 
   // sets map data for data source only if the state is set to the selected features
