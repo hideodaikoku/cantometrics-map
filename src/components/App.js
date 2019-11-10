@@ -42,7 +42,7 @@ export default class App extends Component {
       source,
       maxzoom: MAX_ZOOM_LEVEL,
       type: 'heatmap',
-      paint: HeatMapStyle("cv_5")
+      paint: HeatMapStyle(aspect)
     };
   };
   
@@ -54,7 +54,7 @@ export default class App extends Component {
       type,
       source,
       minzoom: MIN_ZOOM_LEVEL,
-      paint: CircleStyle("cv_5")
+      paint: CircleStyle(aspect)
     }
   }
 

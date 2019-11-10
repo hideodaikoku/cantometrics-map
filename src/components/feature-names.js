@@ -1,5 +1,17 @@
 const features = [
     {
+        "property": "full",
+        "name": "Full Sample"
+    },
+    {
+        "property": "present",
+        "name":  "Present"
+    },
+    {
+        "property": "pending",
+        "name": "Absent"
+    },
+    {
         "property": "social_org_vocal",
         "name": "Vocal social organization"
     },
